@@ -1,6 +1,9 @@
 import { google } from "googleapis";
 
-const SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"];
+const SCOPES = [
+  "https://www.googleapis.com/auth/spreadsheets.readonly",
+  "https://www.googleapis.com/auth/calendar.readonly",
+];
 
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -12,5 +15,10 @@ const auth = new google.auth.GoogleAuth({
 
 export const sheets = google.sheets({
   version: "v4",
+  auth,
+});
+
+export const calendar = google.calendar({
+  version: "v3",
   auth,
 });
