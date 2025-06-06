@@ -16,11 +16,19 @@ export default async function handler(
   }
 
   try {
-    const { phone } = req.body.context;
+    const { phone } = req.body.context.user;
 
     if (!phone) {
       return res.status(400).json({ error: "Phone number is required" });
     }
+
+    const parsePhone = String(phone).trim();
+
+    const formatPhoneNumber = (phone: string): string => {
+      return phone.replace(/\D/g, "").replace(/^55/, "");
+    };
+
+    const formattedPhone = formatPhoneNumber(parsePhone);
 
     const spreadsheetId = process.env.SPREADSHEET_ID;
     if (!spreadsheetId) {
@@ -37,7 +45,7 @@ export default async function handler(
     });
 
     const rows = response.data.values || [];
-    const matchedRow = rows.find((row) => row[0] === phone);
+    const matchedRow = rows.find((row) => row[0] === formattedPhone);
 
     if (!matchedRow) {
       return res.status(404).json({ error: "No matching phone number found" });
@@ -51,10 +59,10 @@ export default async function handler(
       setor: matchedRow[4],
     };
 
-    const live_instructions = `Nome: ${data.nome}, Email: ${data.email}, Cargo: ${data.cargo}, Setor: ${data.setor}`;
+    const live_instructions = `nome: ${data.nome}\nemail: ${data.email}\ncargo: ${data.cargo}\nsetor: ${data.setor}\ntelefone: ${data.telefone}`;
 
     return res.status(200).json({
-      output: {
+      context: {
         live_instructions,
       },
     });
