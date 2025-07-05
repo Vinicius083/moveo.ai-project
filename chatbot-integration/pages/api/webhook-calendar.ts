@@ -17,6 +17,7 @@ export default async function handler(
   }
 
   try {
+    console.log("Received webhook request:", req.body);
     const { email } = req.body.context.user;
 
     if (!email) {

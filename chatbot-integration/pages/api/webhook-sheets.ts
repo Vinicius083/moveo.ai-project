@@ -59,7 +59,7 @@ export default async function handler(
       setor: matchedRow[4],
     };
 
-    const live_instructions = `nome: ${data.nome}\nemail: ${data.email}\ncargo: ${data.cargo}\nsetor: ${data.setor}\ntelefone: ${data.telefone}`;
+    const live_instructions = `Olá ${data.nome},\n\nObrigado por entrar em contato! Aqui estão as informações que você forneceu:\n\n- **Nome:** ${data.nome}\n- **Email:** ${data.email}\n- **Cargo:** ${data.cargo}\n- **Setor:** ${data.setor}\n- **Telefone:** ${data.telefone}\n\nSe precisar de mais alguma coisa, estou à disposição!`;
 
     return res.status(200).json({
       context: {
